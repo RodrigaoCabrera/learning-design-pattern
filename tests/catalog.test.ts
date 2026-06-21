@@ -19,7 +19,7 @@ describe("catalog", () => {
 
   it("marks only implemented patterns as available", () => {
     const available = catalog.filter((p) => p.available).map((p) => p.slug);
-    expect(available).toEqual(["observer"]);
+    expect(available).toEqual(["observer", "singleton"]);
   });
 });
 
@@ -33,6 +33,6 @@ describe("lessons registry", () => {
   });
 
   it("exposes all implemented lessons", () => {
-    expect(allLessons().map((l) => l.slug)).toEqual(["observer"]);
+    expect(allLessons().map((l) => l.slug)).toEqual(["observer", "singleton"]);
   });
 });

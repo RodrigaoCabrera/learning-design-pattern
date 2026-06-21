@@ -19,4 +19,8 @@ export const sceneManifests: SceneManifestRegistry = {
       "shot-11",
     ],
   },
+  "singleton-cinematic": {
+    id: "singleton-cinematic",
+    shots: ["shot-1", "shot-2", "shot-3", "shot-4", "shot-5", "shot-6", "shot-7", "shot-8", "shot-9"],
+  },
 };

@@ -26,7 +26,7 @@ export const catalog: PatternMeta[] = [
     category: "creational",
     difficulty: 1,
     tagline: "Una sola instancia para todos.",
-    available: false,
+    available: true,
   },
   {
     slug: "strategy",

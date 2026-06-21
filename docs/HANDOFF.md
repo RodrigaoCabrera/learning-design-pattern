@@ -1,6 +1,6 @@
 # Hand-off — PatternLab
 
-> Última actualización: 2026-06-21 (migración a modelo v2 completa). Documento para retomar en una nueva sesión.
+> Última actualización: 2026-06-21 (lección Singleton completa). Documento para retomar en una nueva sesión.
 
 ## Qué es
 
@@ -115,12 +115,48 @@ después de `#dim`) + label `shot-11` en el timeline maestro:
 - Caption + entrada `shot-11` agregados en `ObserverPreview.tsx` (`SHOTS`, ahora 11
   planos). Verificado visualmente con Playwright.
 
+## Lección Singleton — HECHO 2026-06-21 (con ajustes de feedback)
+Repetido el molde v2 de Observer para Singleton (analogía: pasillo con tres
+puertas que crean un director distinto cada vez → una sola puerta con un único
+director, creado una sola vez en `getInstance()`):
+- Guión: [scripts/singleton.md](./scripts/singleton.md) (3 actos, **9 planos**).
+- `components/scenes/singleton/SingletonScene.tsx`: reutiliza
+  `useDirectorTimeline` (sigue viviendo en `components/scenes/observer/`, es
+  agnóstico del patrón). Cámaras `#cam1`/`#cam2`. 9 planos (shot-1…shot-9).
+- `lib/lessons/singleton.ts`: 9 shots + code tour de 4 fragmentos sobre el
+  ejemplo `Director.getInstance()`.
+- Registrado en `components/scenes/index.tsx` (`"singleton-cinematic"`),
+  `lib/scenes.ts`, `lib/lessons/index.ts`; `lib/catalog.ts` con
+  `available: true`. Tests nuevos: `tests/singletonLesson.test.ts`;
+  `tests/catalog.test.ts` actualizado. 25/25 tests verdes, `tsc`/`lint` limpios.
+- Bugs encontrados y corregidos durante la primera verificación visual
+  (Playwright): paneo de cámara en shot-3 con signo/magnitud incorrectos
+  (`x: 190` → `x: -550`, centraba mal la segunda puerta) y fondo insuficiente
+  para ese paneo (mismo patrón que el fix de Observer shot-4: rects
+  ensanchados de `width=1400` a `width=1900`).
+- **Feedback del usuario tras el primer pase** (director cortado en el plano 2
+  + faltaba mostrar "cómo funciona"), corregido el mismo día:
+  - Plano 2: el paneo a la puerta 1 (`x: -180`) tampoco encuadraba bien — el
+    director y su globo quedaban cortados por el borde izquierdo. Fix:
+    `x: 550` (paneo hacia el otro lado). Esto reveló un vacío negro en el
+    borde opuesto, así que el fondo se ensanchó de nuevo, ahora hacia la
+    izquierda: `x="-220" width="1900"` → `x="-900" width="2580"`.
+  - Nuevo **plano 8** ("El director también decide"): un empleado pregunta
+    "¿Hay reunión?" y recibe "¡Autorizado!"; otro empleado, con otra
+    pregunta ("¿Puedo salir?"), recibe la misma respuesta del mismo
+    director — demuestra que el Singleton no solo se crea una vez, también
+    **funciona** como punto único de decisión (`decidir()`). El etiquetado
+    final de conceptos pasó de plano 8 a **plano 9**.
+  - Verificado visualmente plano por plano (incluido el nuevo plano 8) y con
+    auto-play completo de punta a punta, sin glitches ni errores de consola.
+
 ## Qué falta (roadmap)
-1. Repetir el molde para los otros 5 patrones (Singleton, Strategy, Decorator,
+1. Repetir el molde para los otros 4 patrones (Strategy, Decorator,
    Factory Method, Adapter): escena dirigida + shots en `lib/lessons/`, code tour.
 2. Evaluar si `CodeTour` necesita su propio set de tests de integración (avance de
    fragmento, líneas resaltadas) — hoy solo cubierto indirectamente por
-   `validateLesson`/`observerLesson` tests; falta un test de componente.
+   `validateLesson`/`observerLesson`/`singletonLesson` tests; falta un test de
+   componente.
 
 ## Notas técnicas clave
 - **Gotcha GSAP+SVG:** nunca setear la posición base con `transform="translate()"`
@@ -135,6 +171,7 @@ después de `#dim`) + label `shot-11` en el timeline maestro:
 ## Cómo verificar
 ```powershell
 cd D:\inside-projects\learning-design-pattern
-npm run dev   # http://localhost:3000/preview/observer  (piloto cinematográfico)
+npm run dev
 ```
-Lección v1 en vivo: `http://localhost:3000/patterns/observer`.
+Lecciones en vivo: `http://localhost:3000/patterns/observer`,
+`http://localhost:3000/patterns/singleton`.
