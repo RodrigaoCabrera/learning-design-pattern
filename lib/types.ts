@@ -21,32 +21,22 @@ export type Shot = {
   audioUrl?: string;
 };
 
-/** A single narrated beat of the analogy animation. */
-export type Step = {
-  id: string;
-  /** Step-by-step narration text (Spanish). */
-  narration: string;
-  /** GSAP timeline label this step advances the scene to. */
-  sceneState: string;
-  /** Optional duration used by auto-play to pace the linear mode. */
-  durationMs?: number;
-};
-
-/** Phase 1: the analogy. */
-export type Phase = {
-  /** Which SVG scene component to render. */
+/** Phase 1: the analogy. The director (scene component) plays each shot. */
+export type AnalogyPhase = {
+  /** Which directed scene component to render. */
   sceneId: string;
-  steps: Step[];
+  shots: Shot[];
 };
 
-/** A single narrated beat of the code walkthrough. */
-export type CodeStep = {
+/** A single beat of the guided code walkthrough, mapped to the analogy. */
+export type CodeFragment = {
   id: string;
-  narration: string;
+  /** Short heading, e.g. "La lista de suscriptos". */
+  title: string;
   /** 1-based line numbers to highlight in the source. */
   highlightLines: number[];
-  /** The bridge: id of the SVG element to light up in the analogy scene. */
-  analogyAnchor?: string;
+  /** Explanation text mapped back to the analogy (no SVG bridge). */
+  explanation: string;
 };
 
 /** Phase 2: the code. */
@@ -54,7 +44,7 @@ export type CodePhase = {
   language: "typescript";
   /** The full snippet shown to the learner. */
   source: string;
-  steps: CodeStep[];
+  tour: CodeFragment[];
 };
 
 /** A complete lesson for one design pattern. */
@@ -67,6 +57,6 @@ export type Pattern = {
   tagline: string;
   /** Whether the lesson is implemented (false = "próximamente"). */
   available: boolean;
-  analogy: Phase;
+  analogy: AnalogyPhase;
   code: CodePhase;
 };

@@ -1,23 +1,23 @@
 "use client";
 
 import type { ComponentType } from "react";
-import { ObserverScene } from "./ObserverScene";
+import { ObserverScene } from "./observer/ObserverScene";
 
-export type SceneProps = {
-  activeState: string;
-  highlightAnchor?: string;
+export type DirectedSceneProps = {
+  activeShot: string;
+  instant?: boolean;
 };
 
-// Maps a lesson's sceneId to its component. Adding a pattern registers its scene
-// here; the engine stays untouched.
-const registry: Record<string, ComponentType<SceneProps>> = {
-  "whatsapp-group": ObserverScene,
+// Maps a lesson's sceneId to its directed scene component. Adding a pattern
+// registers its scene here; the engine stays untouched.
+const registry: Record<string, ComponentType<DirectedSceneProps>> = {
+  "observer-cinematic": ObserverScene,
 };
 
 export function SceneRenderer({
   sceneId,
   ...props
-}: { sceneId: string } & SceneProps) {
+}: { sceneId: string } & DirectedSceneProps) {
   const Scene = registry[sceneId];
   if (!Scene) return null;
   return <Scene {...props} />;

@@ -1,6 +1,6 @@
 # Hand-off — PatternLab
 
-> Última actualización: 2026-06-21. Documento para retomar en una nueva sesión.
+> Última actualización: 2026-06-21 (migración a modelo v2 completa). Documento para retomar en una nueva sesión.
 
 ## Qué es
 
@@ -34,22 +34,38 @@ Comandos: `npm run dev` · `npm run build` · `npm test` · `npm run lint`.
   páginas `app/page.tsx` y `app/patterns/[slug]/page.tsx` (SSG).
 - 25 tests verdes, cobertura ~96% global. Commit inicial: `d709284`.
 
-### En progreso — rediseño cinematográfico (en página de PREVIEW, NO migrado a la lección en vivo)
-- **`app/preview/observer/page.tsx`** → renderiza `ObserverPreview`.
-- **`components/scenes/observer/ObserverScene.tsx`** — UNA escena continua con dos
-  "sets" internos en capas `#act1` (problema) y `#act2` (solución), un timeline
-  maestro de **10 planos** (shot-1…shot-10) con **cross-fade** en la transición
-  (shot-5 → shot-6). Cámaras `#cam1`/`#cam2`. Profesor con 5 expresiones faciales.
-- **`components/scenes/observer/ObserverPreview.tsx`** — reproductor único con los
-  10 planos (subtítulos + controles + dots). Captions = subtítulo y guión de audio.
-- **`components/scenes/observer/useDirectorTimeline.ts`** — hook: timeline pausado
-  cuyos labels marcan el FIN de cada plano; `tweenTo(label)` reproduce a ritmo
-  autorado (cine). Reversa funciona.
-- **`components/player/SubtitleBar.tsx`** — subtítulo en banda dedicada DEBAJO de la
-  escena (zona segura, no overlay).
-- El modelo v2 (`Shot`/`Act`) ya existe en `lib/types.ts` (aditivo) pero los shots
-  de la preview están definidos **inline** en `ObserverPreview.tsx`, todavía no en
-  `lib/lessons/`.
+### Migración a modelo v2 — HECHO 2026-06-21 (lección en vivo, preview retirada)
+- **`lib/types.ts`**: `Pattern.analogy` es ahora `AnalogyPhase{sceneId, shots: Shot[]}`
+  (reemplaza `Phase{steps}`); `Pattern.code` es ahora `CodePhase{source, tour:
+  CodeFragment[]}` con `CodeFragment{id, title, highlightLines, explanation}`
+  (reemplaza `CodeStep` y elimina `analogyAnchor` — sin puente a la escena).
+- **`lib/lessons/observer.ts`**: única fuente de verdad; trae los 11 shots
+  (antes inline en `ObserverPreview.tsx`) y el `tour` de 5 fragmentos de código.
+- **`lib/sceneManifest.ts`/`lib/scenes.ts`**: manifiesto simplificado a
+  `{id, shots: string[]}`; se eliminó `labels`/`anchors`. Escena registrada:
+  `"observer-cinematic"`.
+- **`components/scenes/observer/ObserverScene.tsx`** — UNA escena continua con tres
+  actos internos (`#act1` problema, `#act2` solución, labels de `#act3` para el
+  plano 11), timeline maestro de **11 planos** (shot-1…shot-11) con cross-fade en
+  shot-5→6. Cámaras `#cam1`/`#cam2`. Único componente de escena (se retiró el
+  `ObserverScene.tsx` v1 de `components/scenes/`).
+- **`components/scenes/index.tsx`** — registro `sceneId → componente` con la firma
+  `{activeShot, instant}` (antes `{activeState, highlightAnchor}` del puente v1).
+- **`components/player/AnalogyPlayer.tsx`** (nuevo, generalizado desde
+  `ObserverPreview.tsx`, que se eliminó): reproductor de cualquier escena dirigida
+  por `sceneId`+`shots`. Progreso overlay estilo stories, zonas táctiles mobile,
+  banda de subtítulos.
+- **`components/player/CodeTour.tsx`** (nuevo): recorrido de código sin escena SVG.
+  Progreso (mismo `ProgressBar`, mismo estilo) arriba; código a la izquierda,
+  **explicación del fragmento al lado** (no abajo); sin highlight cruzado a SVG.
+- **`components/player/PhasePlayer.tsx`/`NarrationPanel.tsx`** — eliminados (sin
+  uso tras el rediseño; ningún componente los necesitaba ya).
+- **`app/preview/observer/page.tsx`** — eliminada: la lección en vivo
+  `/patterns/observer` ya usa la escena cinematográfica directamente vía
+  `LessonView` → `AnalogyPlayer`/`CodeTour`.
+- `ProgressBar.tsx`: unificada la forma (alto, padding, gap) entre variantes
+  `default`/`overlay`; solo cambia el color según el fondo, mismo componente y
+  mismo estilo visual en Analogía y Código.
 
 ### Decisiones tomadas
 - Animación: **GSAP elevado** (no Rive/Lottie/3D por ahora; requieren autoría externa).
@@ -100,16 +116,11 @@ después de `#dim`) + label `shot-11` en el timeline maestro:
   planos). Verificado visualmente con Playwright.
 
 ## Qué falta (roadmap)
-1. **Migrar el modelo v2**: pasar `Pattern.analogy` de `steps` a `shots`, mover los
-   shots inline de `ObserverPreview.tsx` a `lib/lessons/observer.ts`, actualizar
-   `lib/types.ts` (reemplazar v1), `validateLesson` y el manifiesto a `shots`.
-   Actualizar tests.
-2. **Recorrido de código (CodeTour)**: nuevo componente fase 2 (código sticky +
-   tarjeta de explicación que avanza por fragmento). Ver SPEC-v2 §Model Changes.
-3. **Cablear la lección en vivo** (`LessonView` / `app/patterns/[slug]`) a la escena
-   cinematográfica + CodeTour, y retirar la preview.
-4. Repetir el molde para los otros 5 patrones (Singleton, Strategy, Decorator,
-   Factory Method, Adapter).
+1. Repetir el molde para los otros 5 patrones (Singleton, Strategy, Decorator,
+   Factory Method, Adapter): escena dirigida + shots en `lib/lessons/`, code tour.
+2. Evaluar si `CodeTour` necesita su propio set de tests de integración (avance de
+   fragmento, líneas resaltadas) — hoy solo cubierto indirectamente por
+   `validateLesson`/`observerLesson` tests; falta un test de componente.
 
 ## Notas técnicas clave
 - **Gotcha GSAP+SVG:** nunca setear la posición base con `transform="translate()"`

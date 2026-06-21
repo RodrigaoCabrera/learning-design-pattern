@@ -12,7 +12,7 @@ export function ProgressBar({ index, total, onSeek, variant = "default" }: Props
   const isOverlay = variant === "overlay";
   return (
     <div
-      className={`flex items-center gap-1.5 ${isOverlay ? "px-3 py-2" : ""}`}
+      className="flex items-center gap-1.5 px-3 py-2"
       role="progressbar"
       aria-valuemin={1}
       aria-valuemax={total}
@@ -25,9 +25,7 @@ export function ProgressBar({ index, total, onSeek, variant = "default" }: Props
           type="button"
           onClick={() => onSeek(i)}
           aria-label={`Ir al paso ${i + 1}`}
-          className={`flex-1 rounded-full transition ${
-            isOverlay ? "h-1" : "h-2"
-          } ${
+          className={`h-1 flex-1 rounded-full transition ${
             i <= index
               ? isOverlay
                 ? "bg-white"

@@ -1,13 +1,11 @@
-// A scene declares which timeline labels and which anchor ids it supports.
-// Lessons are validated against these manifests so they can never reference
-// a sceneState or analogyAnchor the scene doesn't actually provide.
+// A scene declares which shot ids its director timeline knows how to play.
+// Lessons are validated against these manifests so they can never reference a
+// shot the scene doesn't actually provide.
 
 export type SceneManifest = {
   id: string;
-  /** Valid GSAP timeline labels a Step may target. */
-  labels: string[];
-  /** Valid element ids a CodeStep may light up via analogyAnchor. */
-  anchors: string[];
+  /** Valid shot ids a Shot may target (the director's GSAP timeline labels). */
+  shots: string[];
 };
 
 export type SceneManifestRegistry = Record<string, SceneManifest>;

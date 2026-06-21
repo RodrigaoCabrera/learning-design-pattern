@@ -6,8 +6,7 @@ import type { SceneManifestRegistry } from "@/lib/sceneManifest";
 const scenes: SceneManifestRegistry = {
   "demo-scene": {
     id: "demo-scene",
-    labels: ["idle", "active"],
-    anchors: ["box", "arrow"],
+    shots: ["shot-1", "shot-2"],
   },
 };
 
@@ -21,17 +20,17 @@ function validLesson(): Pattern {
     available: true,
     analogy: {
       sceneId: "demo-scene",
-      steps: [
-        { id: "a1", narration: "Start.", sceneState: "idle" },
-        { id: "a2", narration: "Go.", sceneState: "active", durationMs: 1000 },
+      shots: [
+        { id: "shot-1", act: "problem", caption: "Start." },
+        { id: "shot-2", act: "solution", caption: "Go.", durationMs: 1000 },
       ],
     },
     code: {
       language: "typescript",
       source: "const a = 1;\nconst b = 2;\nconst c = a + b;",
-      steps: [
-        { id: "c1", narration: "Declare.", highlightLines: [1] },
-        { id: "c2", narration: "Sum.", highlightLines: [3], analogyAnchor: "box" },
+      tour: [
+        { id: "c1", title: "Declare", highlightLines: [1], explanation: "Declare." },
+        { id: "c2", title: "Sum", highlightLines: [3], explanation: "Sum." },
       ],
     },
   };
@@ -49,31 +48,31 @@ describe("validateLesson", () => {
     expect(errors.some((e) => e.includes("not registered"))).toBe(true);
   });
 
-  it("rejects a sceneState the scene does not declare", () => {
+  it("rejects a shot id the scene does not declare", () => {
     const lesson = validLesson();
-    lesson.analogy.steps[0].sceneState = "nope";
+    lesson.analogy.shots[0].id = "nope";
     const errors = validateLesson(lesson, scenes);
-    expect(errors.some((e) => e.includes('sceneState "nope"'))).toBe(true);
+    expect(errors.some((e) => e.includes('shot "nope"'))).toBe(true);
   });
 
   it("rejects a highlightLine out of range", () => {
     const lesson = validLesson();
-    lesson.code.steps[0].highlightLines = [99];
+    lesson.code.tour[0].highlightLines = [99];
     const errors = validateLesson(lesson, scenes);
     expect(errors.some((e) => e.includes("out of range"))).toBe(true);
   });
 
-  it("rejects an analogyAnchor the scene does not declare", () => {
+  it("rejects an empty fragment explanation", () => {
     const lesson = validLesson();
-    lesson.code.steps[1].analogyAnchor = "ghost";
+    lesson.code.tour[1].explanation = "  ";
     const errors = validateLesson(lesson, scenes);
-    expect(errors.some((e) => e.includes('anchors to "ghost"'))).toBe(true);
+    expect(errors.some((e) => e.includes("empty explanation"))).toBe(true);
   });
 
-  it("rejects duplicate step ids", () => {
+  it("rejects duplicate shot ids", () => {
     const lesson = validLesson();
-    lesson.analogy.steps[1].id = "a1";
+    lesson.analogy.shots[1].id = "shot-1";
     const errors = validateLesson(lesson, scenes);
-    expect(errors.some((e) => e.includes("Duplicate analogy step"))).toBe(true);
+    expect(errors.some((e) => e.includes("Duplicate analogy shot"))).toBe(true);
   });
 });

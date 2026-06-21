@@ -18,27 +18,27 @@ export function validateLesson(
     );
   }
 
-  if (pattern.analogy.steps.length === 0) {
-    errors.push("Analogy phase has no steps.");
+  if (pattern.analogy.shots.length === 0) {
+    errors.push("Analogy phase has no shots.");
   }
 
-  const stepIds = new Set<string>();
-  pattern.analogy.steps.forEach((step, i) => {
-    if (stepIds.has(step.id)) {
-      errors.push(`Duplicate analogy step id "${step.id}".`);
+  const shotIds = new Set<string>();
+  pattern.analogy.shots.forEach((shot, i) => {
+    if (shotIds.has(shot.id)) {
+      errors.push(`Duplicate analogy shot id "${shot.id}".`);
     }
-    stepIds.add(step.id);
+    shotIds.add(shot.id);
 
-    if (!step.narration.trim()) {
-      errors.push(`Analogy step ${i} ("${step.id}") has empty narration.`);
+    if (!shot.caption.trim()) {
+      errors.push(`Analogy shot ${i} ("${shot.id}") has empty caption.`);
     }
-    if (scene && !scene.labels.includes(step.sceneState)) {
+    if (scene && !scene.shots.includes(shot.id)) {
       errors.push(
-        `Analogy step "${step.id}" targets sceneState "${step.sceneState}" not declared by scene "${scene.id}".`
+        `Analogy shot "${shot.id}" is not declared by scene "${scene.id}".`
       );
     }
-    if (step.durationMs !== undefined && step.durationMs <= 0) {
-      errors.push(`Analogy step "${step.id}" has non-positive durationMs.`);
+    if (shot.durationMs !== undefined && shot.durationMs <= 0) {
+      errors.push(`Analogy shot "${shot.id}" has non-positive durationMs.`);
     }
   });
 
@@ -47,32 +47,30 @@ export function validateLesson(
   if (!pattern.code.source.trim()) {
     errors.push("Code phase source is empty.");
   }
-  if (pattern.code.steps.length === 0) {
-    errors.push("Code phase has no steps.");
+  if (pattern.code.tour.length === 0) {
+    errors.push("Code phase has no tour fragments.");
   }
 
-  const codeStepIds = new Set<string>();
-  pattern.code.steps.forEach((step, i) => {
-    if (codeStepIds.has(step.id)) {
-      errors.push(`Duplicate code step id "${step.id}".`);
+  const fragmentIds = new Set<string>();
+  pattern.code.tour.forEach((fragment, i) => {
+    if (fragmentIds.has(fragment.id)) {
+      errors.push(`Duplicate code fragment id "${fragment.id}".`);
     }
-    codeStepIds.add(step.id);
+    fragmentIds.add(fragment.id);
 
-    if (!step.narration.trim()) {
-      errors.push(`Code step ${i} ("${step.id}") has empty narration.`);
+    if (!fragment.title.trim()) {
+      errors.push(`Code fragment ${i} ("${fragment.id}") has empty title.`);
     }
-    step.highlightLines.forEach((line) => {
+    if (!fragment.explanation.trim()) {
+      errors.push(`Code fragment ${i} ("${fragment.id}") has empty explanation.`);
+    }
+    fragment.highlightLines.forEach((line) => {
       if (line < 1 || line > lineCount) {
         errors.push(
-          `Code step "${step.id}" highlights line ${line}, out of range 1..${lineCount}.`
+          `Code fragment "${fragment.id}" highlights line ${line}, out of range 1..${lineCount}.`
         );
       }
     });
-    if (step.analogyAnchor && scene && !scene.anchors.includes(step.analogyAnchor)) {
-      errors.push(
-        `Code step "${step.id}" anchors to "${step.analogyAnchor}" not declared by scene "${scene.id}".`
-      );
-    }
   });
 
   return errors;

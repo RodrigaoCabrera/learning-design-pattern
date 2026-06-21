@@ -2,14 +2,13 @@
 
 import { useState } from "react";
 import type { Pattern } from "@/lib/types";
-import { PhasePlayer } from "./player/PhasePlayer";
-import { CodeBlock } from "./player/CodeBlock";
-import { SceneRenderer } from "./scenes";
+import { AnalogyPlayer } from "./player/AnalogyPlayer";
+import { CodeTour } from "./player/CodeTour";
 
 type PhaseKey = "analogy" | "code";
 
-// Composes the two learning phases for a pattern. The code phase keeps the
-// scene on screen so the analogy↔code bridge can light up the matching element.
+// Composes the two learning phases for a pattern: a directed cinematic
+// analogy, then a guided code tour mapped to it by text (no SVG bridge).
 export function LessonView({ pattern }: { pattern: Pattern }) {
   const [phase, setPhase] = useState<PhaseKey>("analogy");
 
@@ -36,36 +35,9 @@ export function LessonView({ pattern }: { pattern: Pattern }) {
       </div>
 
       {phase === "analogy" ? (
-        <PhasePlayer
-          steps={pattern.analogy.steps}
-          getNarration={(s) => s.narration}
-          renderStage={({ current }) => (
-            <SceneRenderer
-              sceneId={pattern.analogy.sceneId}
-              activeState={current?.sceneState ?? "idle"}
-            />
-          )}
-        />
+        <AnalogyPlayer sceneId={pattern.analogy.sceneId} shots={pattern.analogy.shots} />
       ) : (
-        <PhasePlayer
-          steps={pattern.code.steps}
-          getNarration={(s) => s.narration}
-          renderStage={({ current }) => (
-            <div className="grid gap-4 p-4 md:grid-cols-2">
-              <CodeBlock
-                source={pattern.code.source}
-                highlightLines={current?.highlightLines ?? []}
-              />
-              <div className="self-center">
-                <SceneRenderer
-                  sceneId={pattern.analogy.sceneId}
-                  activeState="reacted"
-                  highlightAnchor={current?.analogyAnchor}
-                />
-              </div>
-            </div>
-          )}
-        />
+        <CodeTour source={pattern.code.source} tour={pattern.code.tour} />
       )}
     </div>
   );
