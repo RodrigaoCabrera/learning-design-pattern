@@ -29,3 +29,13 @@ next-env.d.ts
 
 # testing
 /coverage
+
+# AI tooling / agent caches (machine-local)
+.agents/
+.claude/
+.cline/
+.codebuddy/
+.continue/
+.junie/
+.kiro/
+skills-lock.json

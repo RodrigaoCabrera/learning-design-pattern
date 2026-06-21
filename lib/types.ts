@@ -4,6 +4,23 @@
 
 export type PatternCategory = "creational" | "structural" | "behavioral";
 
+// --- Cinematic analogy model (v2) ---
+// An analogy is a sequence of directed shots grouped into acts. Each shot carries
+// a subtitle (caption) that disambiguates the animation, and is audio-ready.
+
+export type Act = "problem" | "solution" | "concept";
+
+export type Shot = {
+  id: string;
+  act: Act;
+  /** Subtitle shown in sync with the shot; also the script for future TTS audio. */
+  caption: string;
+  /** Used by auto-play to pace the shot; ideally near the shot's animation length. */
+  durationMs?: number;
+  /** Optional pre-recorded / TTS narration, played when the shot becomes active. */
+  audioUrl?: string;
+};
+
 /** A single narrated beat of the analogy animation. */
 export type Step = {
   id: string;
