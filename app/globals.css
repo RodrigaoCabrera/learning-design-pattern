@@ -1,0 +1,28 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  /* System font stacks to avoid build-time font fetching. */
+  --font-sans: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, "Cascadia Code", Menlo, monospace;
+}
+
+html,
+body {
+  padding: 0;
+  margin: 0;
+}
+
+body {
+  background-color: theme("colors.canvas");
+  color: theme("colors.ink");
+  font-family: var(--font-sans);
+}
+
+/* Bridge highlight: lights up the analogy element tied to a code line. */
+.anchor-glow {
+  filter: drop-shadow(0 0 7px theme("colors.highlight"))
+    drop-shadow(0 0 3px theme("colors.highlight"));
+  transition: filter 0.25s ease;
+}
