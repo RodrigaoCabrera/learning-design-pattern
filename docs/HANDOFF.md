@@ -1,6 +1,6 @@
 # Hand-off — PatternLab
 
-> Última actualización: 2026-06-22. Documento para retomar en una nueva sesión.
+> Última actualización: 2026-06-21. Documento para retomar en una nueva sesión.
 
 ## Qué es
 
@@ -59,43 +59,56 @@ Comandos: `npm run dev` · `npm run build` · `npm test` · `npm run lint`.
 - Construcción **acto por acto** para mantener calidad; los actos son solo
   organización de código — el usuario ve **un flujo continuo**.
 
-## Mejoras pendientes de este piloto (feedback del usuario)
+## Mejoras del piloto (feedback del usuario) — HECHO 2026-06-21
 
-### A. Bugs visuales de la escena
-1. **Burbuja "¡Hay tarea!" (shot-7):** está muy lejos del profesor y el texto se
-   corta. Acercarla al profesor y ensanchar la burbuja / achicar el texto+emoji.
-   (`ObserverScene.tsx`, `#msg-bubble` en `translate(220 200)`, rect width 150).
-2. **Badge "1 mensaje → 30 recibidos" (shot-7):** el texto sobresale del contenedor.
-   Ensanchar el rect del `#badge` o reducir el `fontSize`. (rect x=-110 w=220).
-3. **Shot-4 (lista a mano):** queda un espacio vacío a la izquierda por el paneo de
-   cámara `#cam1 {x:120}`. Reencuadrar para que no se vea el borde / vacío.
+### A. Bugs visuales de la escena — resuelto
+1. Burbuja "¡Hay tarea!" (shot-7): acercada al profesor (`translate(95 165)`),
+   ensanchada a 200px, `fontSize` 17.
+2. Badge "1 mensaje → 30 recibidos" (shot-7): rect ensanchado a 300px, `fontSize` 18.
+3. Shot-4 (paneo de cámara): fondo (`wall`/floor) y overlays `#tense`/`#vignette`
+   extendidos a `x=-220 width=1400` para que el paneo `x:120` no revele un borde
+   vacío sin oscurecer.
 
-### B. Comportamiento del Auto-play (`components/player/`)
-- El auto-play **no debe deshabilitarse al llegar al final**.
-- Al clickearlo debe **empezar desde 0** (reset + play).
-- **Excepción:** si ya está en ejecución, ahí sí el botón debe estar deshabilitado.
-- Impacto: `useLessonPlayer.ts` (auto-play actualmente se detiene en `atEnd` y el
-  botón se deshabilita con `atEnd && !isPlaying`) y `Controls.tsx`. Conviene separar
-  el botón "Auto-play" del play/pause, o redefinir su lógica.
+### B. Auto-play — resuelto
+- `useLessonPlayer.ts`: nuevo `autoPlay()` que siempre reinicia desde el índice 0.
+- El botón ya **no se deshabilita al llegar al final**; solo se deshabilita
+  mientras está corriendo (muestra "❚❚ Reproduciendo…").
+- **Bug encontrado y corregido al verificar:** al hacer auto-play desde el final,
+  `tl.tweenTo()` animaba en reversa por TODA la línea de tiempo (se veía como un
+  rebobinado largo). Fix: se distingue salto manual (Anterior/Siguiente/dots/
+  restart de auto-play) de tick automático vía `lastAction`/`instant` en
+  `useLessonPlayer.ts` → `useDirectorTimeline.ts` usa `tl.seek()` (instantáneo) para
+  saltos manuales y `tl.tweenTo()` (cinematográfico) solo para los ticks del
+  auto-play en curso. Esto también resolvió que Siguiente/Anterior rápido se
+  sintiera lento (esperaba la animación completa de cada paso).
 
-### C. Navegación / stepper
-- Mover los **dots/steps a ARRIBA, estilo Instagram stories** (barras segmentadas).
-- En **mobile**, agregar **zonas clickeables a izquierda/derecha** de la escena para
-  retroceder/avanzar de plano.
-- Impacto: `ProgressBar.tsx` (reposicionar/estilizar) + `ObserverPreview.tsx`
-  (overlay de zonas táctiles). Usar Tailwind responsive.
+### C. Navegación / stepper — resuelto
+- Dots movidos a overlay arriba de la escena, estilo Instagram stories
+  (`ProgressBar.tsx` con `variant="overlay"`, barras finas blancas/translúcidas).
+- Zonas táctiles izquierda/derecha en mobile (`sm:hidden`) en `ObserverPreview.tsx`.
+
+## Acto 3 — Plano 11 (nombrar las partes) — HECHO 2026-06-21
+Implementado en `ObserverScene.tsx` (grupo `#act3-labels`, dentro de `#cam2`,
+después de `#dim`) + label `shot-11` en el timeline maestro:
+- Se desvanecen `#msg-bubble` y `#badge` (limpieza visual) y se atenúa `#dim`.
+- 3 rótulos con línea líder punteada: **Emisor (Sujeto)** → profesor,
+  **Observadores** → grilla de miembros, **Lista de suscripción** → header del
+  panel.
+- Cierre con keyword **"Desacoplamiento"** (banner dorado, reusa la posición que
+  dejó libre el badge).
+- Caption + entrada `shot-11` agregados en `ObserverPreview.tsx` (`SHOTS`, ahora 11
+  planos). Verificado visualmente con Playwright.
 
 ## Qué falta (roadmap)
-1. Aplicar las **mejoras del piloto** (A, B, C de arriba).
-2. **Acto 3 — Plano 11** (nombrar las partes: Sujeto, Observadores, Desacoplamiento).
-3. **Migrar el modelo v2**: pasar `Pattern.analogy` de `steps` a `shots`, mover los
-   shots inline a `lib/lessons/observer.ts`, actualizar `lib/types.ts` (reemplazar
-   v1), `validateLesson` y el manifiesto a `shots`. Actualizar tests.
-4. **Recorrido de código (CodeTour)**: nuevo componente fase 2 (código sticky +
+1. **Migrar el modelo v2**: pasar `Pattern.analogy` de `steps` a `shots`, mover los
+   shots inline de `ObserverPreview.tsx` a `lib/lessons/observer.ts`, actualizar
+   `lib/types.ts` (reemplazar v1), `validateLesson` y el manifiesto a `shots`.
+   Actualizar tests.
+2. **Recorrido de código (CodeTour)**: nuevo componente fase 2 (código sticky +
    tarjeta de explicación que avanza por fragmento). Ver SPEC-v2 §Model Changes.
-5. **Cablear la lección en vivo** (`LessonView` / `app/patterns/[slug]`) a la escena
+3. **Cablear la lección en vivo** (`LessonView` / `app/patterns/[slug]`) a la escena
    cinematográfica + CodeTour, y retirar la preview.
-6. Repetir el molde para los otros 5 patrones (Singleton, Strategy, Decorator,
+4. Repetir el molde para los otros 5 patrones (Singleton, Strategy, Decorator,
    Factory Method, Adapter).
 
 ## Notas técnicas clave

@@ -70,6 +70,11 @@ export function ObserverScene({ activeShot, instant = false }: Props) {
     gsap.set(".robot", { opacity: 0, scale: 0, transformOrigin: "50% 100%" });
     gsap.set("#robot-alarm-flash", { opacity: 0 });
 
+    // Act 3 set (naming the concept, shot-11)
+    gsap.set(["#act3-subject-label", "#act3-observers-label", "#act3-list-label"], { opacity: 0 });
+    gsap.set([".act3-line"], { opacity: 0 });
+    gsap.set("#act3-keyword", { opacity: 0, scale: 0.85, transformOrigin: "50% 50%" });
+
     // ===== SHOT 1 — Establishing =====
     tl.to("#cam1", { scale: 1.05, duration: 1.2, ease: "power2.out" });
     tl.addLabel("shot-1");
@@ -169,6 +174,18 @@ export function ObserverScene({ activeShot, instant = false }: Props) {
     tl.to(".robot-face", { scale: 1.12, duration: 0.2, yoyo: true, repeat: 1, transformOrigin: "center center", stagger: 0.1 }, "<0.2");
     tl.to("#robot-alarm-flash", { opacity: 0.8, duration: 0.25, yoyo: true, repeat: 5 }, "<");
     tl.addLabel("shot-10");
+
+    // ===== SHOT 11 — Naming the concept: freeze + labels =====
+    tl.to(["#msg-bubble", "#badge"], { opacity: 0, duration: 0.3 });
+    tl.to("#dim", { opacity: 0.15, duration: 0.4 }, "<");
+    tl.to("#act3-subject-label", { opacity: 1, duration: 0.4 }, ">0.1");
+    tl.to(".act3-line-subject", { opacity: 1, duration: 0.3 }, "<");
+    tl.to("#act3-observers-label", { opacity: 1, duration: 0.4 }, ">0.15");
+    tl.to(".act3-line-observers", { opacity: 1, duration: 0.3 }, "<");
+    tl.to("#act3-list-label", { opacity: 1, duration: 0.4 }, ">0.15");
+    tl.to(".act3-line-list", { opacity: 1, duration: 0.3 }, "<");
+    tl.to("#act3-keyword", { opacity: 1, scale: 1, duration: 0.5, ease: "back.out(1.6)" }, ">0.3");
+    tl.addLabel("shot-11");
   }, instant);
 
   // Idle breathing, independent of the master timeline.
@@ -454,6 +471,32 @@ export function ObserverScene({ activeShot, instant = false }: Props) {
           </g>
 
           <rect id="dim" x="0" y="0" width="960" height="540" fill="#1b2440" style={{ mixBlendMode: "multiply" }} />
+
+          {/* ===== Act 3 — naming the concept (shot-11) ===== */}
+          <g id="act3-labels">
+            <line className="act3-line act3-line-subject" x1="150" y1="62" x2="150" y2="295" stroke="#1f2747" strokeWidth="2" strokeDasharray="4 4" />
+            <g id="act3-subject-label" transform="translate(150 40)">
+              <rect x="-85" y="-20" width="170" height="40" rx="10" fill="#fff" stroke="#1f2747" strokeWidth="1.5" />
+              <text x="0" y="5" textAnchor="middle" fontSize="15" fontWeight="800" fill="#1f2747">Emisor (Sujeto)</text>
+            </g>
+
+            <line className="act3-line act3-line-observers" x1="300" y1="487" x2="620" y2="250" stroke="#1f2747" strokeWidth="2" strokeDasharray="4 4" />
+            <g id="act3-observers-label" transform="translate(300 505)">
+              <rect x="-95" y="-18" width="190" height="36" rx="10" fill="#fff" stroke="#1f2747" strokeWidth="1.5" />
+              <text x="0" y="5" textAnchor="middle" fontSize="15" fontWeight="800" fill="#1f2747">Observadores</text>
+            </g>
+
+            <line className="act3-line act3-line-list" x1="875" y1="497" x2="875" y2="120" stroke="#1f2747" strokeWidth="2" strokeDasharray="4 4" />
+            <g id="act3-list-label" transform="translate(875 515)">
+              <rect x="-85" y="-18" width="170" height="36" rx="10" fill="#fff" stroke="#1f2747" strokeWidth="1.5" />
+              <text x="0" y="5" textAnchor="middle" fontSize="13" fontWeight="800" fill="#1f2747">Lista de suscripción</text>
+            </g>
+
+            <g id="act3-keyword" transform="translate(480 50)">
+              <rect x="-160" y="-24" width="320" height="48" rx="24" fill="#1f2747" />
+              <text x="0" y="6" textAnchor="middle" fontSize="22" fontWeight="800" fill="#ffd36b">Desacoplamiento</text>
+            </g>
+          </g>
         </g>
       </g>
     </svg>

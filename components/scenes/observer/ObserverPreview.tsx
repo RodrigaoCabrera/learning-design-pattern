@@ -20,6 +20,7 @@ const SHOTS: Shot[] = [
   { id: "shot-8", act: "solution", caption: "No te importa quién lo leyó ni cuántos hay. Solo mandás el mensaje.", durationMs: 4500 },
   { id: "shot-9", act: "solution", caption: "Si uno se va, deja de recibir. Si uno entra, recibe todo. Vos no hacés nada extra.", durationMs: 5000 },
   { id: "shot-10", act: "solution", caption: "¿Necesitás una nueva reacción —un log, una alerta—? Sumás un escuchador más, sin tocar al profesor ni a los demás.", durationMs: 5500 },
+  { id: "shot-11", act: "concept", caption: "El que avisa es el Sujeto. Los que escuchan son los Observadores. Entran y salen sin que el Sujeto lo note: están desacoplados.", durationMs: 6000 },
 ];
 
 export function ObserverPreview() {
