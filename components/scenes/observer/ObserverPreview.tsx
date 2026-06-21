@@ -29,17 +29,37 @@ export function ObserverPreview() {
   return (
     <div className="flex flex-col gap-4">
       <div className="overflow-hidden rounded-2xl bg-black shadow-xl">
-        <ObserverScene activeShot={shot.id} />
+        <div className="relative">
+          <div className="absolute inset-x-0 top-0 z-20">
+            <ProgressBar index={p.index} total={p.total} onSeek={p.goTo} variant="overlay" />
+          </div>
+
+          <ObserverScene activeShot={shot.id} instant={p.instant} />
+
+          {/* Mobile tap zones: left/right thirds step back/forward, only below sm. */}
+          <button
+            type="button"
+            className="absolute inset-y-0 left-0 z-10 w-1/3 sm:hidden"
+            onClick={p.prev}
+            disabled={p.atStart}
+            aria-label="Paso anterior"
+          />
+          <button
+            type="button"
+            className="absolute inset-y-0 right-0 z-10 w-1/3 sm:hidden"
+            onClick={p.next}
+            disabled={p.atEnd}
+            aria-label="Paso siguiente"
+          />
+        </div>
         <SubtitleBar text={shot.caption} stepKey={p.index} />
       </div>
 
-      <ProgressBar index={p.index} total={p.total} onSeek={p.goTo} />
       <Controls
         isPlaying={p.isPlaying}
         atStart={p.atStart}
         atEnd={p.atEnd}
-        onPlay={p.play}
-        onPause={p.pause}
+        onAutoPlay={p.autoPlay}
         onPrev={p.prev}
         onNext={p.next}
       />

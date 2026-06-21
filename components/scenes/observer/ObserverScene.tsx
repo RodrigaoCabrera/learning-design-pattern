@@ -8,6 +8,8 @@ import { useDirectorTimeline } from "./useDirectorTimeline";
 type Props = {
   /** Active shot id (shot-1 … shot-10). One continuous flow for the viewer. */
   activeShot: string;
+  /** Snap instantly to the shot's end state instead of tweening to it. */
+  instant?: boolean;
 };
 
 const CARD_COUNT = 30;
@@ -27,7 +29,7 @@ function memberPos(i: number) {
 // crossfades between them at shot-6. Acts are a coding/structure concept only —
 // the viewer sees a single flow. Positioned elements only animate scale/opacity
 // (never x/y) to avoid the GSAP/SVG translate-clobbering gotcha.
-export function ObserverScene({ activeShot }: Props) {
+export function ObserverScene({ activeShot, instant = false }: Props) {
   const counter = useRef<SVGTextElement>(null);
 
   const scope = useDirectorTimeline(activeShot, (tl) => {
@@ -167,7 +169,7 @@ export function ObserverScene({ activeShot }: Props) {
     tl.to(".robot-face", { scale: 1.12, duration: 0.2, yoyo: true, repeat: 1, transformOrigin: "center center", stagger: 0.1 }, "<0.2");
     tl.to("#robot-alarm-flash", { opacity: 0.8, duration: 0.25, yoyo: true, repeat: 5 }, "<");
     tl.addLabel("shot-10");
-  });
+  }, instant);
 
   // Idle breathing, independent of the master timeline.
   useGSAP(
@@ -208,8 +210,8 @@ export function ObserverScene({ activeShot }: Props) {
       <g id="act1">
         <g id="cam1">
           <g id="cam1-shake">
-            <rect x="0" y="0" width="960" height="400" fill="url(#wall)" />
-            <rect x="0" y="400" width="960" height="140" fill="#d8c4a0" />
+            <rect x="-220" y="0" width="1400" height="400" fill="url(#wall)" />
+            <rect x="-220" y="400" width="1400" height="140" fill="#d8c4a0" />
 
             <g id="clock" transform="translate(120 110)">
               <circle r="52" fill="#fffdf7" stroke="#3b3a52" strokeWidth="5" />
@@ -339,8 +341,8 @@ export function ObserverScene({ activeShot }: Props) {
               </g>
             </g>
 
-            <rect id="tense" x="0" y="0" width="960" height="540" fill="#1f2747" style={{ mixBlendMode: "multiply" }} />
-            <rect id="vignette" x="0" y="0" width="960" height="540" fill="url(#vig)" />
+            <rect id="tense" x="-220" y="0" width="1400" height="540" fill="#1f2747" style={{ mixBlendMode: "multiply" }} />
+            <rect id="vignette" x="-220" y="0" width="1400" height="540" fill="url(#vig)" />
           </g>
         </g>
       </g>
@@ -373,10 +375,10 @@ export function ObserverScene({ activeShot }: Props) {
             </g>
           </g>
 
-          <g id="msg-bubble" transform="translate(220 200)">
-            <rect x="0" y="0" width="150" height="46" rx="12" fill="#25d366" />
-            <path d="M10 46 l-10 14 l22 -8 z" fill="#25d366" />
-            <text x="16" y="29" fontSize="20" fontWeight="700" fill="#fff">¡Hay tarea! 📚</text>
+          <g id="msg-bubble" transform="translate(95 165)">
+            <rect x="0" y="0" width="200" height="46" rx="12" fill="#25d366" />
+            <path d="M40 46 l-10 16 l24 -16 z" fill="#25d366" />
+            <text x="14" y="29" fontSize="17" fontWeight="700" fill="#fff">¡Hay tarea! 📚</text>
           </g>
 
           <g id="group-panel">
@@ -445,8 +447,8 @@ export function ObserverScene({ activeShot }: Props) {
           </g>
 
           <g id="badge" transform="translate(480 56)">
-            <rect x="-110" y="-26" width="220" height="44" rx="22" fill="#1f2747" />
-            <text x="0" y="5" textAnchor="middle" fontSize="20" fontWeight="800" fill="#ffd36b">
+            <rect x="-150" y="-26" width="300" height="44" rx="22" fill="#1f2747" />
+            <text x="0" y="5" textAnchor="middle" fontSize="18" fontWeight="800" fill="#ffd36b">
               1 mensaje → 30 recibidos
             </text>
           </g>

@@ -4,8 +4,7 @@ type Props = {
   isPlaying: boolean;
   atStart: boolean;
   atEnd: boolean;
-  onPlay: () => void;
-  onPause: () => void;
+  onAutoPlay: () => void;
   onPrev: () => void;
   onNext: () => void;
 };
@@ -17,8 +16,7 @@ export function Controls({
   isPlaying,
   atStart,
   atEnd,
-  onPlay,
-  onPause,
+  onAutoPlay,
   onPrev,
   onNext,
 }: Props) {
@@ -34,14 +32,16 @@ export function Controls({
         ← Anterior
       </button>
 
+      {/* Auto-play always restarts from the first shot. It only disables
+          while it's actively running — never because the lesson ended. */}
       <button
         type="button"
         className={`${btn} bg-accent text-white hover:opacity-90`}
-        onClick={isPlaying ? onPause : onPlay}
-        disabled={atEnd && !isPlaying}
-        aria-label={isPlaying ? "Pausar" : "Reproducir"}
+        onClick={onAutoPlay}
+        disabled={isPlaying}
+        aria-label="Reproducir desde el inicio"
       >
-        {isPlaying ? "❚❚ Pausar" : "▶ Auto-play"}
+        {isPlaying ? "❚❚ Reproduciendo…" : "▶ Auto-play"}
       </button>
 
       <button

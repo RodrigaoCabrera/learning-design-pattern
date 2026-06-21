@@ -42,8 +42,7 @@ export function PhasePlayer<T extends PlayableStep>({
         isPlaying={p.isPlaying}
         atStart={p.atStart}
         atEnd={p.atEnd}
-        onPlay={p.play}
-        onPause={p.pause}
+        onAutoPlay={p.autoPlay}
         onPrev={p.prev}
         onNext={p.next}
       />

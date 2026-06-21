@@ -4,12 +4,15 @@ type Props = {
   index: number;
   total: number;
   onSeek: (i: number) => void;
+  /** "overlay" = thin Instagram-stories style bars on top of a dark scene. */
+  variant?: "default" | "overlay";
 };
 
-export function ProgressBar({ index, total, onSeek }: Props) {
+export function ProgressBar({ index, total, onSeek, variant = "default" }: Props) {
+  const isOverlay = variant === "overlay";
   return (
     <div
-      className="flex items-center gap-1.5"
+      className={`flex items-center gap-1.5 ${isOverlay ? "px-3 py-2" : ""}`}
       role="progressbar"
       aria-valuemin={1}
       aria-valuemax={total}
@@ -22,8 +25,16 @@ export function ProgressBar({ index, total, onSeek }: Props) {
           type="button"
           onClick={() => onSeek(i)}
           aria-label={`Ir al paso ${i + 1}`}
-          className={`h-2 flex-1 rounded-full transition ${
-            i <= index ? "bg-accent" : "bg-accentSoft"
+          className={`flex-1 rounded-full transition ${
+            isOverlay ? "h-1" : "h-2"
+          } ${
+            i <= index
+              ? isOverlay
+                ? "bg-white"
+                : "bg-accent"
+              : isOverlay
+                ? "bg-white/30"
+                : "bg-accentSoft"
           }`}
         />
       ))}
