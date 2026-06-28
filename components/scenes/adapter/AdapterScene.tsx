@@ -89,8 +89,8 @@ export function AdapterScene({ activeShot, instant = false }: Props) {
     tl.to("#second-device", { opacity: 1, scale: 1, duration: 0.45, ease: "back.out(1.8)" });
     tl.addLabel("shot-8");
 
-    // ===== SHOT 9 — Naming the concept: freeze + labels =====
-    tl.to("#second-device", { opacity: 0, duration: 0.3 });
+    // ===== SHOT 9 — Naming the concept: clean up the solution overlays, freeze + labels =====
+    tl.to(["#second-device", "#junction-wall", "#junction-charger", "#flow", "#charged-badge"], { opacity: 0, duration: 0.3 });
     tl.to("#dim", { opacity: 0.15, duration: 0.4 }, "<");
     tl.to("#act3-have-label", { opacity: 1, duration: 0.4 }, ">0.05");
     tl.to(".act3-line-have", { opacity: 1, duration: 0.3 }, "<");

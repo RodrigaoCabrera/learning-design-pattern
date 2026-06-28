@@ -1,0 +1,78 @@
+- main [ref=e2]:
+  - navigation [ref=e3]:
+    - link "← Volver al catálogo" [ref=e4] [cursor=pointer]:
+      - /url: /
+  - generic [ref=e5]:
+    - generic [ref=e6]:
+      - generic [ref=e7]: Patrón estructural
+      - heading "Decorator" [level=1] [ref=e8]
+      - paragraph [ref=e9]: Agregá funcionalidad envolviendo.
+    - generic [ref=e10]:
+      - button "1 · Analogía" [pressed] [ref=e11] [cursor=pointer]
+      - button "2 · Código" [ref=e12] [cursor=pointer]
+    - generic [ref=e13]:
+      - generic [ref=e14]:
+        - generic [ref=e15]:
+          - progressbar "Paso 1 de 9" [ref=e17]:
+            - button "Ir al paso 1" [ref=e18] [cursor=pointer]
+            - button "Ir al paso 2" [ref=e19] [cursor=pointer]
+            - button "Ir al paso 3" [ref=e20] [cursor=pointer]
+            - button "Ir al paso 4" [ref=e21] [cursor=pointer]
+            - button "Ir al paso 5" [ref=e22] [cursor=pointer]
+            - button "Ir al paso 6" [ref=e23] [cursor=pointer]
+            - button "Ir al paso 7" [ref=e24] [cursor=pointer]
+            - button "Ir al paso 8" [ref=e25] [cursor=pointer]
+            - button "Ir al paso 9" [ref=e26] [cursor=pointer]
+          - 'img "Decorator: de un menú de cafetería que explota al tener cada combinación como producto fijo, a un café simple que se envuelve con un agregado a la vez, apilando capas que suman" [ref=e27]':
+            - generic [ref=e29]:
+              - generic [ref=e32]:
+                - generic [ref=e36]: un café…
+                - generic [ref=e39]: 🥛 🍮 🍦
+              - generic [ref=e42]:
+                - generic [ref=e44]: Menú · un producto por cada combo
+                - generic [ref=e47]: café
+                - generic [ref=e50]: café + leche
+                - generic [ref=e53]: café + caramelo
+                - generic [ref=e56]: café + leche + caramelo
+                - generic [ref=e59]: café + leche + crema
+                - generic [ref=e62]: café + caramelo + crema
+                - generic [ref=e87]: ✗ ¡el menú no entra!
+            - generic [ref=e91]:
+              - generic [ref=e98]: + canela
+              - generic [ref=e103]: + crema
+              - generic [ref=e108]: + caramelo
+              - generic [ref=e113]: + leche
+              - generic [ref=e121]: café
+              - generic [ref=e124]: ☕ sigue siendo un café
+              - generic [ref=e125]:
+                - generic [ref=e127]: Ticket
+                - generic [ref=e128]:
+                  - generic [ref=e129]: café
+                  - generic [ref=e130]: $2
+                - generic [ref=e131]:
+                  - generic [ref=e132]: + leche
+                  - generic [ref=e133]: $1
+                - generic [ref=e134]:
+                  - generic [ref=e135]: + caramelo
+                  - generic [ref=e136]: $1.5
+                - generic [ref=e137]:
+                  - generic [ref=e138]: + crema
+                  - generic [ref=e139]: $1
+                - generic [ref=e140]:
+                  - generic [ref=e141]: + canela
+                  - generic [ref=e142]: $1
+                - generic [ref=e143]: Total
+                - generic [ref=e144]: $2
+                - generic [ref=e145]: $3
+                - generic [ref=e146]: $4.5
+                - generic [ref=e147]: $5.5
+                - generic [ref=e148]: $6.5
+              - generic [ref=e150]:
+                - generic [ref=e154]: El café base
+                - generic [ref=e157]: Cada capa envuelve y suma
+                - generic [ref=e160]: Envolver para sumar
+        - paragraph [ref=e162]: "Querés un café. Pero no uno cualquiera: con tus agregados."
+      - generic [ref=e163]:
+        - button "Paso anterior" [disabled] [ref=e164]: ← Anterior
+        - button "Reproducir desde el inicio" [ref=e165] [cursor=pointer]: ▶ Auto-play
+        - button "Paso siguiente" [ref=e166] [cursor=pointer]: Siguiente →

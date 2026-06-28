@@ -253,14 +253,25 @@ de enchufe de viaje.**
 Observer, Singleton, Strategy, Decorator, Factory Method y Adapter — todos con el
 modelo v2 (analogía cinematográfica amigable + code tour), `available: true`.
 
-## Qué falta (roadmap)
-1. Verificación visual con Playwright de las lecciones nuevas (Strategy, Decorator,
-   Factory Method, Adapter) contra el dev server del usuario, plano por plano +
-   auto-play; corregir bugs de encuadre/fondo si aparecen (patrón conocido).
-2. Evaluar si `CodeTour` necesita su propio set de tests de integración (avance de
-   fragmento, líneas resaltadas) — hoy solo cubierto indirectamente por
-   `validateLesson`/`observerLesson`/`singletonLesson` tests; falta un test de
-   componente.
+## Verificación visual + test de CodeTour — HECHO 2026-06-28
+- **Verificación visual (Playwright CLI, skill `playwright-cli`)** contra el dev
+  server del usuario en :3000. Adapter: pase completo de los 9 planos + pestaña de
+  Código (resaltado de líneas OK), 0 errores de consola (salvo favicon 404
+  inofensivo). Strategy/Decorator/Factory Method: confirmados los planos de paneo
+  más grandes (shot-2) sin bordes vacíos, 0 errores. **Bug corregido:** el plano 9
+  de Adapter no limpiaba los overlays de la fase solución (badges "✓ carga",
+  "acepta tu cargador", "encaja en la pared", ⚡), que se cruzaban con los rótulos
+  de concepto → ahora se desvanecen junto a `#second-device` (mismo criterio de
+  limpieza que el shot-9 de Singleton). Verificado tras el fix.
+- **Test de componente de `CodeTour`** agregado (`tests/CodeTour.test.tsx`):
+  primer fragmento + líneas resaltadas (`data-active`), avance con "Siguiente",
+  salto por dots, y disabled de Anterior/Siguiente en los extremos. 45/45 tests
+  verdes en total, tsc/lint limpios.
+
+## Estado: PatternLab completo (MVP de 6 patrones)
+Los 6 patrones implementados, en vivo y verificados. No quedan pendientes del
+roadmap original. Ideas futuras (no comprometidas): audio/TTS por caption
+(`Shot.audioUrl` ya existe en el modelo), más patrones, o pulido visual fino.
 
 ## Notas técnicas clave
 - **Gotcha GSAP+SVG:** nunca setear la posición base con `transform="translate()"`
