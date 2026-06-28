@@ -3,6 +3,7 @@
 import type { ComponentType } from "react";
 import { ObserverScene } from "./observer/ObserverScene";
 import { SingletonScene } from "./singleton/SingletonScene";
+import { StrategyScene } from "./strategy/StrategyScene";
 
 export type DirectedSceneProps = {
   activeShot: string;
@@ -14,6 +15,7 @@ export type DirectedSceneProps = {
 const registry: Record<string, ComponentType<DirectedSceneProps>> = {
   "observer-cinematic": ObserverScene,
   "singleton-cinematic": SingletonScene,
+  "strategy-cinematic": StrategyScene,
 };
 
 export function SceneRenderer({

@@ -34,7 +34,7 @@ export const catalog: PatternMeta[] = [
     category: "behavioral",
     difficulty: 2,
     tagline: "Elegí el algoritmo en tiempo de ejecución.",
-    available: false,
+    available: true,
   },
   {
     slug: "decorator",

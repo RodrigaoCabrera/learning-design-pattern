@@ -150,9 +150,38 @@ director, creado una sola vez en `getInstance()`):
   - Verificado visualmente plano por plano (incluido el nuevo plano 8) y con
     auto-play completo de punta a punta, sin glitches ni errores de consola.
 
+## Lección Strategy — HECHO 2026-06-28
+Repetido el molde v2 para Strategy. **Analogía amigable (sin código en la escena):
+un viajero que quiere ir de un lugar a otro.** Decisión de diseño clave tras
+feedback: la analogía no debe contener código (clases, if/else, sintaxis) — eso
+vive solo en la pestaña de Código. Debe entenderla público general.
+- Guión: [scripts/strategy.md](./scripts/strategy.md) (3 actos, **9 planos**).
+- `components/scenes/strategy/StrategyScene.tsx`: reutiliza `useDirectorTimeline`.
+  Acto 1 (`#act1`, el problema: una sola persona "sabelotodo" hace malabares con
+  todas las formas de viajar a la vez y se satura; una forma nueva la desborda) →
+  Acto 2 (`#act2`, la solución: un especialista por forma de viajar — auto/bici/a
+  pie — que elegís; el elegido se ilumina y dibuja su ruta en el mapa del viajero).
+  Cámaras `#cam1`/`#cam2`, crossfade en shot-4. **Beat de comportamiento** en shots
+  5-7: cambiás de especialista en marcha (auto→bici→a pie) y la ruta se redibuja sin
+  que el viajero cambie; shot-8 suma "transporte público" como especialista nuevo
+  sin tocar a los demás (contraste con shot-3). Solo `scale`/`opacity` en elementos
+  posicionados; `x` solo en cámaras.
+  - **Lección de diseño (importante para Decorator/Factory/Adapter):** la analogía
+    es una historia humana, NUNCA una representación del código. El código (clases,
+    interfaces) queda exclusivamente en el code tour.
+- `lib/lessons/strategy.ts`: 9 shots + code tour de 4 fragmentos sobre
+  `RouteStrategy` (interfaz) + estrategias concretas + `Navegador` (contexto) con
+  `cambiarEstrategia()`/`trazar()`.
+- Registrado en `components/scenes/index.tsx` (`"strategy-cinematic"`),
+  `lib/scenes.ts`, `lib/lessons/index.ts`; `lib/catalog.ts` con `available: true`.
+  Test nuevo `tests/strategyLesson.test.ts`; `tests/catalog.test.ts` actualizado.
+- ⚠️ Falta la verificación visual con Playwright plano por plano (encuadre de
+  cámara, sin bordes vacíos en el paneo del shot-2, redibujo de ruta en 5-7) +
+  auto-play completo. Hacerla contra el dev server del usuario.
+
 ## Qué falta (roadmap)
-1. Repetir el molde para los otros 4 patrones (Strategy, Decorator,
-   Factory Method, Adapter): escena dirigida + shots en `lib/lessons/`, code tour.
+1. Repetir el molde para los otros 3 patrones (Decorator, Factory Method,
+   Adapter): escena dirigida + shots en `lib/lessons/`, code tour.
 2. Evaluar si `CodeTour` necesita su propio set de tests de integración (avance de
    fragmento, líneas resaltadas) — hoy solo cubierto indirectamente por
    `validateLesson`/`observerLesson`/`singletonLesson` tests; falta un test de
