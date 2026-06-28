@@ -179,9 +179,32 @@ vive solo en la pestaña de Código. Debe entenderla público general.
   cámara, sin bordes vacíos en el paneo del shot-2, redibujo de ruta en 5-7) +
   auto-play completo. Hacerla contra el dev server del usuario.
 
+## Lección Decorator — HECHO 2026-06-28
+Repetido el molde v2 para Decorator. **Analogía amigable (sin código): una
+cafetería.**
+- Guión: [scripts/decorator.md](./scripts/decorator.md) (3 actos, **9 planos**).
+- `components/scenes/decorator/DecoratorScene.tsx`: reutiliza `useDirectorTimeline`.
+  Acto 1 (`#act1`, el problema: tener cada combinación como producto fijo hace
+  explotar el menú; un agregado nuevo obliga a rehacerlo todo) → Acto 2 (`#act2`,
+  la solución: un café simple en el centro y **envolturas anidadas** —rounded rects
+  con etiqueta "+ leche/caramelo/crema"— que lo recubren, más un **ticket que crece**
+  con el total actualizándose). Cámaras `#cam1`/`#cam2`, crossfade en shot-4. **Beat
+  de comportamiento** en shot-7: sello "☕ sigue siendo un café" (misma interfaz);
+  shot-8 suma "canela" como envoltura nueva sin rehacer el menú (contraste con
+  shot-3). Solo `scale`/`opacity` en elementos posicionados; `x` solo en cámaras.
+  Vapor idle (`#steam`) como tween infinito separado del timeline.
+- `lib/lessons/decorator.ts`: 9 shots + code tour de 4 fragmentos (interfaz `Cafe`,
+  `CafeSimple`, `Agregado` abstracto, `ConLeche`/`ConCaramelo` apilables).
+- Registrado en `components/scenes/index.tsx` (`"decorator-cinematic"`),
+  `lib/scenes.ts`, `lib/lessons/index.ts`; `lib/catalog.ts` con `available: true`.
+  Test nuevo `tests/decoratorLesson.test.ts`; `tests/catalog.test.ts` actualizado.
+  33/33 tests verdes, tsc/lint limpios.
+- ⚠️ Falta verificación visual con Playwright plano por plano + auto-play (encuadre
+  del paneo del shot-2, capas que envuelven bien centradas, ticket alineado).
+
 ## Qué falta (roadmap)
-1. Repetir el molde para los otros 3 patrones (Decorator, Factory Method,
-   Adapter): escena dirigida + shots en `lib/lessons/`, code tour.
+1. Repetir el molde para los otros 2 patrones (Factory Method, Adapter):
+   escena dirigida + shots en `lib/lessons/`, code tour.
 2. Evaluar si `CodeTour` necesita su propio set de tests de integración (avance de
    fragmento, líneas resaltadas) — hoy solo cubierto indirectamente por
    `validateLesson`/`observerLesson`/`singletonLesson` tests; falta un test de

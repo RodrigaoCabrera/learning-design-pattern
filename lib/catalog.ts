@@ -42,7 +42,7 @@ export const catalog: PatternMeta[] = [
     category: "structural",
     difficulty: 2,
     tagline: "Agregá funcionalidad envolviendo.",
-    available: false,
+    available: true,
   },
   {
     slug: "factory-method",
