@@ -30,6 +30,9 @@ next-env.d.ts
 # testing
 /coverage
 
+# playwright-cli local artifacts (snapshots, console/network logs)
+/.playwright-cli/
+
 # AI tooling / agent caches (machine-local)
 .agents/
 .claude/
