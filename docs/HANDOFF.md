@@ -202,9 +202,34 @@ cafetería.**
 - ⚠️ Falta verificación visual con Playwright plano por plano + auto-play (encuadre
   del paneo del shot-2, capas que envuelven bien centradas, ticket alineado).
 
+## Lección Factory Method — HECHO 2026-06-28
+Repetido el molde v2 para Factory Method. **Analogía amigable (sin código): una
+empresa de envíos con una línea de proceso idéntica; cada sucursal decide su
+vehículo.**
+- Guión: [scripts/factory-method.md](./scripts/factory-method.md) (3 actos, **9 planos**).
+- `components/scenes/factory-method/FactoryMethodScene.tsx`: reutiliza
+  `useDirectorTimeline`. Una "tira de proceso" compartida (componente interno
+  `Strip` con Recibir→Empacar→[crear vehículo]→Entregar) se dibuja en ambos actos;
+  entre actos solo cambia la estación del vehículo. Acto 1 (`#act1`, el problema:
+  vehículo clavado a moto 🔒; un pedido lejano que necesita camión traba la línea)
+  → Acto 2 (`#act2`, la solución: la estación "crear vehículo" la decide cada
+  sucursal — Ciudad 🛵 / Regional 🚚 / Ultramar 🚢; rótulo de sucursal + vehículo
+  toggle). Cámaras `#cam1`/`#cam2`, crossfade en shot-4. **Beat** en shot-7: marco
+  "esto no cambia" sobre Recibir/Empacar/Entregar (el proceso alrededor es idéntico,
+  solo cambia lo creado); shot-8 suma "Sucursal Aérea" ✈️ sin tocar la línea
+  (contraste con shot-3). Solo `scale`/`opacity` en posicionados; `x` solo en cámaras.
+- `lib/lessons/factory-method.ts`: 9 shots + code tour de 4 fragmentos (interfaz
+  `Vehiculo`, proceso compartido `despachar()`, `crearVehiculo()` abstracto =
+  factory method, `SucursalCiudad`/`SucursalRegional` concretas).
+- Registrado en `components/scenes/index.tsx` (`"factory-method-cinematic"`),
+  `lib/scenes.ts`, `lib/lessons/index.ts`; `lib/catalog.ts` con `available: true`.
+  Test nuevo `tests/factoryMethodLesson.test.ts`; `tests/catalog.test.ts` actualizado.
+  37/37 tests verdes, tsc/lint limpios.
+- ⚠️ Falta verificación visual con Playwright plano por plano + auto-play.
+
 ## Qué falta (roadmap)
-1. Repetir el molde para los otros 2 patrones (Factory Method, Adapter):
-   escena dirigida + shots en `lib/lessons/`, code tour.
+1. Repetir el molde para el último patrón (Adapter): escena dirigida + shots en
+   `lib/lessons/`, code tour.
 2. Evaluar si `CodeTour` necesita su propio set de tests de integración (avance de
    fragmento, líneas resaltadas) — hoy solo cubierto indirectamente por
    `validateLesson`/`observerLesson`/`singletonLesson` tests; falta un test de

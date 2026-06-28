@@ -3,6 +3,7 @@ import { observerLesson } from "./observer";
 import { singletonLesson } from "./singleton";
 import { strategyLesson } from "./strategy";
 import { decoratorLesson } from "./decorator";
+import { factoryMethodLesson } from "./factory-method";
 
 // Registry of fully implemented lessons. Add a pattern here once its data and
 // scene exist; the catalog (lib/catalog) drives what is shown vs "próximamente".
@@ -11,6 +12,7 @@ const lessons: Record<string, Pattern> = {
   singleton: singletonLesson,
   strategy: strategyLesson,
   decorator: decoratorLesson,
+  "factory-method": factoryMethodLesson,
 };
 
 export function getLesson(slug: string): Pattern | undefined {

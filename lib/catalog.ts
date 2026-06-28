@@ -50,7 +50,7 @@ export const catalog: PatternMeta[] = [
     category: "creational",
     difficulty: 2,
     tagline: "La subclase decide qué crear.",
-    available: false,
+    available: true,
   },
   {
     slug: "adapter",
