@@ -58,6 +58,6 @@ export const catalog: PatternMeta[] = [
     category: "structural",
     difficulty: 1,
     tagline: "Conectá interfaces incompatibles.",
-    available: false,
+    available: true,
   },
 ];

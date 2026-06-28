@@ -35,4 +35,8 @@ export const sceneManifests: SceneManifestRegistry = {
     id: "factory-method-cinematic",
     shots: ["shot-1", "shot-2", "shot-3", "shot-4", "shot-5", "shot-6", "shot-7", "shot-8", "shot-9"],
   },
+  "adapter-cinematic": {
+    id: "adapter-cinematic",
+    shots: ["shot-1", "shot-2", "shot-3", "shot-4", "shot-5", "shot-6", "shot-7", "shot-8", "shot-9"],
+  },
 };

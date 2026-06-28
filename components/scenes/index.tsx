@@ -6,6 +6,7 @@ import { SingletonScene } from "./singleton/SingletonScene";
 import { StrategyScene } from "./strategy/StrategyScene";
 import { DecoratorScene } from "./decorator/DecoratorScene";
 import { FactoryMethodScene } from "./factory-method/FactoryMethodScene";
+import { AdapterScene } from "./adapter/AdapterScene";
 
 export type DirectedSceneProps = {
   activeShot: string;
@@ -20,6 +21,7 @@ const registry: Record<string, ComponentType<DirectedSceneProps>> = {
   "strategy-cinematic": StrategyScene,
   "decorator-cinematic": DecoratorScene,
   "factory-method-cinematic": FactoryMethodScene,
+  "adapter-cinematic": AdapterScene,
 };
 
 export function SceneRenderer({

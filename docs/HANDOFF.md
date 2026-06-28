@@ -227,9 +227,36 @@ vehículo.**
   37/37 tests verdes, tsc/lint limpios.
 - ⚠️ Falta verificación visual con Playwright plano por plano + auto-play.
 
+## Lección Adapter — HECHO 2026-06-28
+Repetido el molde v2 para Adapter. **Analogía amigable (sin código): un adaptador
+de enchufe de viaje.**
+- Guión: [scripts/adapter.md](./scripts/adapter.md) (3 actos, **9 planos**).
+- `components/scenes/adapter/AdapterScene.tsx`: reutiliza `useDirectorTimeline`.
+  Acto 1 (`#act1`, el problema: el plug plano del cargador no encaja en la toma
+  redonda de la pared; "✗ no encaja" y no podés cambiar ninguno) → Acto 2 (`#act2`,
+  la solución: un adaptador en el medio — prongs redondos de un lado, ranuras planas
+  del otro; se iluminan las uniones pared↔adaptador y cargador↔adaptador, la
+  corriente fluye y la batería se llena). Cámaras `#cam1`/`#cam2`, crossfade en
+  shot-4. **Beat** en shot-7: ⚡ + batería que carga (`#batt-fill` con `scaleX`,
+  origen izquierdo, sobre rect sin translate base); shot-8 muestra que el adaptador
+  es reutilizable (otro aparato, mismo plug). Solo `scale`/`opacity` (+ ese `scaleX`)
+  en posicionados; `x` solo en cámaras.
+- `lib/lessons/adapter.ts`: 9 shots + code tour de 4 fragmentos (interfaz objetivo
+  `EnchufePlano`, adaptee `TomaRedonda`, `Adaptador` que la envuelve y traduce).
+- Registrado en `components/scenes/index.tsx` (`"adapter-cinematic"`), `lib/scenes.ts`,
+  `lib/lessons/index.ts`; `lib/catalog.ts` con `available: true`. Test nuevo
+  `tests/adapterLesson.test.ts`; `tests/catalog.test.ts` actualizado (los 6 disponibles).
+  41/41 tests verdes, tsc/lint limpios.
+- ⚠️ Falta verificación visual con Playwright plano por plano + auto-play.
+
+## 🎉 Los 6 patrones del roadmap están implementados
+Observer, Singleton, Strategy, Decorator, Factory Method y Adapter — todos con el
+modelo v2 (analogía cinematográfica amigable + code tour), `available: true`.
+
 ## Qué falta (roadmap)
-1. Repetir el molde para el último patrón (Adapter): escena dirigida + shots en
-   `lib/lessons/`, code tour.
+1. Verificación visual con Playwright de las lecciones nuevas (Strategy, Decorator,
+   Factory Method, Adapter) contra el dev server del usuario, plano por plano +
+   auto-play; corregir bugs de encuadre/fondo si aparecen (patrón conocido).
 2. Evaluar si `CodeTour` necesita su propio set de tests de integración (avance de
    fragmento, líneas resaltadas) — hoy solo cubierto indirectamente por
    `validateLesson`/`observerLesson`/`singletonLesson` tests; falta un test de
